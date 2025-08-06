@@ -1,0 +1,41 @@
+FROM quay.io/fedora/fedora-minimal:42
+
+# Install multipath-tools and required packages
+RUN dnf update -y && \
+    dnf install -y \
+        device-mapper-multipath \
+        systemd \
+        util-linux \
+        procps-ng \
+        iproute \
+        && \
+    dnf clean all
+
+# Create necessary directories
+RUN mkdir -p /etc/multipath /var/lib/multipath
+
+# Copy the entrypoint script
+COPY scripts/multipath-daemon-entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Set up systemd to work in containers
+RUN systemctl enable multipathd && \
+    systemctl mask systemd-udev-trigger.service systemd-udevd.service && \
+    find /etc/systemd/system \
+         /lib/systemd/system \
+         /usr/lib/systemd/system \
+         -path '*.wants/*' \
+         -exec rm \{} \; && \
+    systemctl set-default multi-user.target
+
+# Expose the default multipath configuration directory
+VOLUME ["/etc/multipath"]
+
+# Use our custom entrypoint
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["/sbin/init"]
+
+# Add labels for identification
+LABEL io.openshift.multipath-operator.daemon="true" \
+      description="Multipath daemon for managing multipath storage devices" \
+      version="1.0"

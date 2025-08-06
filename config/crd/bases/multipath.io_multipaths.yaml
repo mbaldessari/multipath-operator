@@ -1,0 +1,289 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.18.0
+  name: multipaths.multipath.io
+spec:
+  group: multipath.io
+  names:
+    kind: Multipath
+    listKind: MultipathList
+    plural: multipaths
+    singular: multipath
+  scope: Cluster
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.ready
+      name: Ready
+      type: boolean
+    - jsonPath: .status.nodesReady
+      name: Nodes Ready
+      type: integer
+    - jsonPath: .status.nodesTotal
+      name: Nodes Total
+      type: integer
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              config:
+                properties:
+                  blacklist:
+                    items:
+                      properties:
+                        device:
+                          properties:
+                            product:
+                              type: string
+                            vendor:
+                              type: string
+                          type: object
+                        devnode:
+                          type: string
+                        wwid:
+                          type: string
+                      type: object
+                    type: array
+                  blacklistExceptions:
+                    items:
+                      properties:
+                        device:
+                          properties:
+                            product:
+                              type: string
+                            vendor:
+                              type: string
+                          type: object
+                        devnode:
+                          type: string
+                        wwid:
+                          type: string
+                      type: object
+                    type: array
+                  defaults:
+                    properties:
+                      checker_timeout:
+                        type: string
+                      dev_loss_timeout:
+                        type: string
+                      failback:
+                        type: string
+                      fast_io_fail_tmo:
+                        type: string
+                      find_multipaths:
+                        type: string
+                      flush_on_last_del:
+                        type: string
+                      max_fds:
+                        type: string
+                      no_path_retry:
+                        type: string
+                      path_checker:
+                        type: string
+                      path_grouping_policy:
+                        type: string
+                      path_selector:
+                        type: string
+                      rr_min_io:
+                        type: string
+                      rr_weight:
+                        type: string
+                      user_friendly_names:
+                        type: string
+                    type: object
+                  devices:
+                    items:
+                      properties:
+                        dev_loss_timeout:
+                          type: string
+                        failback:
+                          type: string
+                        fast_io_fail_tmo:
+                          type: string
+                        features:
+                          type: string
+                        hardware_handler:
+                          type: string
+                        no_path_retry:
+                          type: string
+                        path_checker:
+                          type: string
+                        path_grouping_policy:
+                          type: string
+                        path_selector:
+                          type: string
+                        product:
+                          type: string
+                        rr_min_io:
+                          type: string
+                        rr_weight:
+                          type: string
+                        vendor:
+                          type: string
+                      required:
+                      - product
+                      - vendor
+                      type: object
+                    type: array
+                  multipaths:
+                    items:
+                      properties:
+                        alias:
+                          type: string
+                        failback:
+                          type: string
+                        path_grouping_policy:
+                          type: string
+                        path_selector:
+                          type: string
+                        wwid:
+                          type: string
+                      required:
+                      - wwid
+                      type: object
+                    type: array
+                type: object
+              nodeSelector:
+                additionalProperties:
+                  type: string
+                type: object
+              securityContext:
+                properties:
+                  allowPrivilegeEscalation:
+                    type: boolean
+                  privileged:
+                    type: boolean
+                  runAsGroup:
+                    format: int64
+                    type: integer
+                  runAsUser:
+                    format: int64
+                    type: integer
+                  seLinuxOptions:
+                    properties:
+                      level:
+                        type: string
+                      role:
+                        type: string
+                      type:
+                        type: string
+                      user:
+                        type: string
+                    type: object
+                type: object
+              updateStrategy:
+                properties:
+                  rollingUpdate:
+                    properties:
+                      maxUnavailable:
+                        format: int32
+                        type: integer
+                    type: object
+                  type:
+                    type: string
+                type: object
+            type: object
+          status:
+            properties:
+              conditions:
+                items:
+                  description: Condition contains details for one aspect of the current
+                    state of this API Resource.
+                  properties:
+                    lastTransitionTime:
+                      description: |-
+                        lastTransitionTime is the last time the condition transitioned from one status to another.
+                        This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
+                      format: date-time
+                      type: string
+                    message:
+                      description: |-
+                        message is a human readable message indicating details about the transition.
+                        This may be an empty string.
+                      maxLength: 32768
+                      type: string
+                    observedGeneration:
+                      description: |-
+                        observedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      minimum: 0
+                      type: integer
+                    reason:
+                      description: |-
+                        reason contains a programmatic identifier indicating the reason for the condition's last transition.
+                        Producers of specific condition types may define expected values and meanings for this field,
+                        and whether the values are considered a guaranteed API.
+                        The value should be a CamelCase string.
+                        This field may not be empty.
+                      maxLength: 1024
+                      minLength: 1
+                      pattern: ^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$
+                      type: string
+                    status:
+                      description: status of the condition, one of True, False, Unknown.
+                      enum:
+                      - "True"
+                      - "False"
+                      - Unknown
+                      type: string
+                    type:
+                      description: type of condition in CamelCase or in foo.example.com/CamelCase.
+                      maxLength: 316
+                      pattern: ^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - message
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+              message:
+                type: string
+              nodesReady:
+                format: int32
+                type: integer
+              nodesTotal:
+                format: int32
+                type: integer
+              phase:
+                type: string
+              ready:
+                type: boolean
+            required:
+            - nodesReady
+            - nodesTotal
+            - ready
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

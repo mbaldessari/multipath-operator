@@ -1,0 +1,23 @@
+# Ignore build artifacts and unnecessary files for daemon image
+bin/
+vendor/
+.git/
+.github/
+bundle/
+config/
+hack/
+api/
+controllers/
+*.md
+README.md
+LICENSE
+Makefile
+go.mod
+go.sum
+main.go
+Dockerfile
+.dockerignore
+
+# Keep only what we need
+!scripts/
+!Dockerfile.daemon

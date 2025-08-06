@@ -1,0 +1,46 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  annotations:
+    alm-examples: '[]'
+    capabilities: Basic Install
+    operatorframework.io/suggested-namespace: multipath-system
+  name: multipath-operator.v0.0.0
+  namespace: placeholder
+spec:
+  apiservicedefinitions: {}
+  customresourcedefinitions: {}
+  description: Multipath Operator Manages multipath pods
+  displayName: Multipath Operator
+  icon:
+  - base64data: ""
+    mediatype: ""
+  install:
+    spec:
+      deployments: null
+    strategy: ""
+  installModes:
+  - supported: false
+    type: OwnNamespace
+  - supported: false
+    type: SingleNamespace
+  - supported: false
+    type: MultiNamespace
+  - supported: true
+    type: AllNamespaces
+  keywords:
+  - multipath
+  - storage
+  links:
+  - name: Multipath Operator
+    url: https://multipath-operator.domain
+  maturity: alpha
+  minKubeVersion: 1.32.0
+  provider:
+    name: multipath.openshift.io
+  relatedImages:
+  - image: quay.io/rhn_support_mbaldess/multipath-daemon:latest
+    name: multipath-daemon
+  - image: quay.io/rhn_support_mbaldess/multipath-operator:latest
+    name: manager
+  version: 0.0.0

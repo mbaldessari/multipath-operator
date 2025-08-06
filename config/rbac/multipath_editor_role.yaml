@@ -1,0 +1,27 @@
+# permissions for end users to edit multipaths.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: multipath-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: multipath-editor-role
+rules:
+- apiGroups:
+  - multipath.io
+  resources:
+  - multipaths
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - multipath.io
+  resources:
+  - multipaths/status
+  verbs:
+  - get

@@ -1,0 +1,4 @@
+## Append samples of your project ##
+resources:
+- multipath_v1_multipath.yaml
+#+kubebuilder:scaffold:manifestskustomizesamples
