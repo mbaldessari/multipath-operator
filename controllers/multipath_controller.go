@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"reflect"
-	"strings"
 	"time"
 
 	securityv1 "github.com/openshift/api/security/v1"
@@ -565,12 +564,8 @@ func (r *MultipathReconciler) generateMultipathConfig(multipath *multipathv1.Mul
 }
 
 func (r *MultipathReconciler) parseFeatureValue(value string) string {
-	parts := strings.Fields(value)
-	if len(parts) > 1 {
-		// For features and hardware_handler, skip the count and return the rest
-		return strings.Join(parts[1:], " ")
-	}
-	return value
+	// Return the value as-is, including argument count
+	return fmt.Sprintf("%q", value)
 }
 
 func (r *MultipathReconciler) addDeviceBlock(config, devnode, wwid string, device multipathv1.DeviceIdentifier) string {
@@ -593,7 +588,7 @@ func (r *MultipathReconciler) addDeviceBlock(config, devnode, wwid string, devic
 	return config
 }
 
-func (r *MultipathReconciler) generateBlacklistConfig(entries []multipathv1.BlacklistEntry, blockName string) string {
+func (r *MultipathReconciler) generateBlacklistConfig(entries []multipathv1.BlacklistEntry, blockName string) string { //nolint:unparam
 	if len(entries) == 0 {
 		return ""
 	}

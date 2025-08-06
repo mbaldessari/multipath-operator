@@ -136,7 +136,7 @@ var _ = Describe("Multipath Configuration Generation", func() {
 		})
 
 		Context("when generating blacklist configuration", func() {
-			It("should generate blacklist entries", func() {
+			It("should generate blacklist entries", func() { //nolint:dupl
 				multipath := &multipathv1.Multipath{
 					Spec: multipathv1.MultipathSpec{
 						Config: multipathv1.MultipathConfig{
@@ -168,7 +168,7 @@ var _ = Describe("Multipath Configuration Generation", func() {
 				Expect(config).To(ContainSubstring("product PRODUCT1"))
 			})
 
-			It("should generate blacklist exception entries", func() {
+			It("should generate blacklist exception entries", func() { //nolint:dupl
 				multipath := &multipathv1.Multipath{
 					Spec: multipathv1.MultipathSpec{
 						Config: multipathv1.MultipathConfig{

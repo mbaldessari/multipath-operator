@@ -165,21 +165,21 @@ var _ = Describe("Multipath Integration Tests", func() {
 				scc := &securityv1.SecurityContextConstraints{}
 				err = k8sClient.Get(ctx, types.NamespacedName{Name: MultipathSCCName}, scc)
 				if err == nil {
-					k8sClient.Delete(ctx, scc)
+					_ = k8sClient.Delete(ctx, scc)
 				}
 
 				// Clean up ClusterRole
 				clusterRole := &rbacv1.ClusterRole{}
 				err = k8sClient.Get(ctx, types.NamespacedName{Name: MultipathSCCRoleName}, clusterRole)
 				if err == nil {
-					k8sClient.Delete(ctx, clusterRole)
+					_ = k8sClient.Delete(ctx, clusterRole)
 				}
 
 				// Clean up ClusterRoleBinding
 				clusterRoleBinding := &rbacv1.ClusterRoleBinding{}
 				err = k8sClient.Get(ctx, types.NamespacedName{Name: MultipathSCCBindingName}, clusterRoleBinding)
 				if err == nil {
-					k8sClient.Delete(ctx, clusterRoleBinding)
+					_ = k8sClient.Delete(ctx, clusterRoleBinding)
 				}
 			}
 		})
